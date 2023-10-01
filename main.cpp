@@ -1,7 +1,7 @@
 /**
 * Author: Gianfranco Romani
 * Assignment: Simple 2D Scene
-* Date due: 2023-06-11, 11:59pm
+* Date due: 2023-09-30, 11:59pm
 * I pledge that I have completed this assignment without
 * collaborating with anyone else, in conformance with the
 * NYU School of Engineering Policies and Procedures on
