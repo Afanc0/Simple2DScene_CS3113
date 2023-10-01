@@ -47,18 +47,12 @@ const char SQUARE_SPRITE[] = "tria.png";
 GLuint triangle_texture_id,
 square_texture_id;
 
-const int TRIANGLE_RED = 1.0,
-TRIANGLE_BLUE = 0.7,
-TRIANGLE_GREEN = 0.3,
-TRIANGLE_OPACITY = 1.0;
-
 const float MILLISECONDS_IN_SECOND = 1000.0;
 const float DEGREES_PER_SECOND = 90.0f;
 
 SDL_Window* g_display_window;
 
 bool g_game_is_running = true;
-bool g_is_growing = true;
 
 ShaderProgram g_program;
 glm::mat4 g_view_matrix,
@@ -163,20 +157,17 @@ void update()
     g_previous_ticks = ticks;
 
     g_triangle_x += 1.0f * delta_time;
-    g_triangle_rotate += DEGREES_PER_SECOND * delta_time; // 90-degrees per second
     g_model_matrix = glm::mat4(1.0f);
 
-    /* Translate -> Rotate */
+    /* Translate */
     g_model_matrix = glm::translate(g_model_matrix, glm::vec3(g_triangle_x, 0.0f, 0.0f));
-    g_model_matrix = glm::rotate(g_model_matrix, glm::radians(g_triangle_rotate), glm::vec3(0.0f, 0.0f, 1.0f));
 
 
     g_square_x += 1.0f * delta_time;
     g_square_rotate += DEGREES_PER_SECOND * delta_time; // 90-degrees per second
     g_model_matrix = glm::mat4(1.0f);
 
-    /* Translate -> Rotate */
-    g_model_matrix = glm::translate(g_model_matrix, glm::vec3(g_square_x, 0.0f, 0.0f));
+    /* Rotate */
     g_model_matrix = glm::rotate(g_model_matrix, glm::radians(g_square_rotate), glm::vec3(0.0f, 0.0f, 1.0f));
 
 }
@@ -185,7 +176,7 @@ void draw_square(glm::mat4& object_model_matrix, GLuint& object_texture_id)
 {
     g_program.SetModelMatrix(object_model_matrix);
     glBindTexture(GL_TEXTURE_2D, object_texture_id);
-    glDrawArrays(GL_TRIANGLES, 0, 6); // we are now drawing 2 triangles, so we use 6 instead of 3
+    glDrawArrays(GL_TRIANGLES, 0, 6); 
 }
 
 void draw_triangle(glm::mat4& object_model_matrix, GLuint& object_texture_id)
@@ -234,7 +225,6 @@ void render() {
 
     draw_triangle(g_model_matrix, triangle_texture_id);
 
-    // We disable two attribute arrays now
     glDisableVertexAttribArray(g_program.positionAttribute);
     glDisableVertexAttribArray(g_program.texCoordAttribute);
 
@@ -243,9 +233,6 @@ void render() {
 
 void shutdown() { SDL_Quit(); }
 
-/**
- Start here—we can see the general structure of a game loop without worrying too much about the details yet.
- */
 int main(int argc, char* argv[])
 {
     initialise();
